@@ -1,252 +1,173 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Malla Química y Farmacia UCh</title>
-<style>
-  body {
-    font-family: Arial, sans-serif;
-    background: #fff0f6;
-    padding: 20px;
-    margin: 0;
-  }
-  h1 {
-    text-align: center;
-    color: #c71585;
-    margin-bottom: 25px;
-    font-size: 30px;
-    font-weight: bold;
-  }
-  .fila-semestres {
-    display: flex;
-    justify-content: center;
-    gap: 10px;
-    margin-bottom: 25px;
-  }
-  .semestre {
-    display: flex;
-    flex-direction: column;
-    min-width: 170px;
-    max-width: 170px;
-    border: 2px solid #d8bfd8;
-    border-radius: 10px;
-    background: #fff0f6;
-    padding: 6px 8px;
-    box-sizing: border-box;
-  }
-  .semestre h2 {
-    color: #c71585;
-    text-align: center;
-    margin-bottom: 8px;
-    font-size: 16px;
-  }
-  .ramo {
-    cursor: pointer;
-    border: 2px solid #d8bfd8;
-    background-color: #fce4ec;
-    padding: 5px 6px;
-    margin: 4px 0;
-    border-radius: 6px;
-    user-select: none;
-    transition: background-color 0.3s, border-color 0.3s, color 0.3s;
-    font-size: 12px;
-    text-align: center;
-    line-height: 1.1;
-  }
-  .bloqueado {
-    background-color: #e0e0e0;
-    border-color: #ccc;
-    cursor: not-allowed;
-    color: #888;
-  }
-  .desbloqueado {
-    background-color: #ffc0cb;
-    border-color: #ff69b4;
-    color: #333;
-  }
-  .aprobado {
-    background-color: #c71585;
-    border-color: #8b008b;
-    color: white;
-  }
-</style>
+  <meta charset="UTF-8">
+  <title>Malla Química y Farmacia UCh</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      background-color: #fff0f5;
+      text-align: center;
+    }
+    h1 {
+      color: #d63384;
+    }
+    .grid-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 40px;
+      margin: 30px;
+    }
+    .semester {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      background-color: #ffe6f0;
+      border: 2px solid #d63384;
+      padding: 10px;
+      border-radius: 10px;
+      width: 180px;
+    }
+    .course {
+      padding: 8px;
+      border-radius: 8px;
+      border: none;
+      cursor: pointer;
+    }
+    .locked {
+      background-color: lightgray;
+      color: #555;
+    }
+    .unlocked {
+      background-color: pink;
+    }
+    .completed {
+      background-color: fuchsia;
+      color: white;
+    }
+  </style>
 </head>
 <body>
+  <h1>Malla Química y Farmacia UCh</h1>
+  <div class="grid-container" id="grid"></div>
 
-<h1>Malla Química y Farmacia UCh</h1>
+  <script>
+    const courses = {
+      // Primer al Quinto Semestre
+      'Química General I': [],
+      'Técnicas de Laboratorio Químico': [],
+      'Mecánica': [],
+      'Introducción al Cálculo': [],
+      'Químico Farmacéutico y su Acción': [],
+      'Inglés I': [],
 
-<div class="fila-semestres" id="fila1">
-  <!-- Semestres 1 a 6 -->
-  <div class="semestre" id="sem1">
-    <h2>Primer Semestre</h2>
-    <div class="ramo desbloqueado" data-id="qg1" data-prereqs="">Química General I</div>
-    <div class="ramo desbloqueado" data-id="tlq" data-prereqs="">Técnicas de Laboratorio Químico</div>
-    <div class="ramo desbloqueado" data-id="mec" data-prereqs="">Mecánica</div>
-    <div class="ramo desbloqueado" data-id="calc1" data-prereqs="">Introducción al Cálculo</div>
-    <div class="ramo desbloqueado" data-id="qfa" data-prereqs="">Químico Farmacéutico y su Acción</div>
-    <div class="ramo desbloqueado" data-id="ing1" data-prereqs="">Inglés I</div>
-  </div>
+      'Química General II': ['Química General I'],
+      'Laboratorio de Química General': ['Química General I', 'Técnicas de Laboratorio Químico'],
+      'Electromagnetismo': ['Introducción al Cálculo', 'Mecánica'],
+      'Calculo Diferencial e Integral': ['Introducción al Cálculo'],
+      'Biología General': [],
+      'Medicamento y su Evolución': ['Químico Farmacéutico y su Acción'],
+      'Inglés II': ['Inglés I'],
 
-  <div class="semestre" id="sem2">
-    <h2>Segundo Semestre</h2>
-    <div class="ramo bloqueado" data-id="qg2" data-prereqs="qg1">Química General II</div>
-    <div class="ramo bloqueado" data-id="labqg" data-prereqs="qg1,tlq">Laboratorio de Química General</div>
-    <div class="ramo bloqueado" data-id="em" data-prereqs="calc1,mec">Electromagnetismo</div>
-    <div class="ramo bloqueado" data-id="calcdi" data-prereqs="calc1">Cálculo Diferencial e Integral</div>
-    <div class="ramo bloqueado" data-id="bio" data-prereqs="">Biología General</div>
-    <div class="ramo bloqueado" data-id="mevol" data-prereqs="qfa">Medicamento y su Evolución</div>
-    <div class="ramo bloqueado" data-id="ing2" data-prereqs="ing1">Inglés II</div>
-  </div>
+      'Química Orgánica I': ['Química General II'],
+      'Química Analítica I': ['Química General II', 'Laboratorio de Química General'],
+      'Laboratorio de Química Orgánica': ['Química General II', 'Laboratorio de Química General'],
+      'Estadística y Análisis de Datos': ['Calculo Diferencial e Integral'],
+      'Fisiología Celular': ['Biología General', 'Química General I', 'Electromagnetismo'],
+      'Investigación para las Ciencias Farmacéuticas': ['Medicamento y su Evolución', 'Inglés II'],
+      'Inglés III': ['Inglés II'],
 
-  <div class="semestre" id="sem3">
-    <h2>Tercer Semestre</h2>
-    <div class="ramo bloqueado" data-id="qo1" data-prereqs="qg2">Química Orgánica I</div>
-    <div class="ramo bloqueado" data-id="qa1" data-prereqs="qg2,labqg">Química Analítica I</div>
-    <div class="ramo bloqueado" data-id="labqo" data-prereqs="qg2,labqg">Laboratorio de Química Orgánica</div>
-    <div class="ramo bloqueado" data-id="estad" data-prereqs="calcdi">Estadística y Análisis de Datos</div>
-    <div class="ramo bloqueado" data-id="fcel" data-prereqs="bio,qg1,em">Fisiología Celular</div>
-    <div class="ramo bloqueado" data-id="invest" data-prereqs="mevol,ing2">Investigación para las Ciencias Farmacéuticas</div>
-    <div class="ramo bloqueado" data-id="ing3" data-prereqs="ing2">Inglés III</div>
-  </div>
+      'Química Orgánica II': ['Química Orgánica I'],
+      'Laboratorio de Análisis Químico': ['Química Analítica I', 'Estadística y Análisis de Datos'],
+      'Química Analítica II': ['Química Analítica I'],
+      'Fisicoquímica': ['Mecánica', 'Química Orgánica I'],
+      'Fisiología de Sistemas': ['Fisiología Celular'],
+      'Práctica Intermedia': ['Investigación para las Ciencias Farmacéuticas'],
+      'Inglés IV': ['Inglés III'],
 
-  <div class="semestre" id="sem4">
-    <h2>Cuarto Semestre</h2>
-    <div class="ramo bloqueado" data-id="qo2" data-prereqs="qo1">Química Orgánica II</div>
-    <div class="ramo bloqueado" data-id="labaq" data-prereqs="qa1,estad">Laboratorio de Análisis Químico</div>
-    <div class="ramo bloqueado" data-id="qa2" data-prereqs="qa1">Química Analítica II</div>
-    <div class="ramo bloqueado" data-id="fisicoq" data-prereqs="mec,qo1">Fisicoquímica</div>
-    <div class="ramo bloqueado" data-id="fsis" data-prereqs="fcel">Fisiología de Sistemas</div>
-    <div class="ramo bloqueado" data-id="pinter" data-prereqs="invest">Práctica Intermedia</div>
-    <div class="ramo bloqueado" data-id="ing4" data-prereqs="ing3">Inglés IV</div>
-  </div>
+      'Laboratorio de Análisis Instrumental': ['Laboratorio de Análisis Químico', 'Química Analítica II'],
+      'Botánica y Farmacognosia': ['Química Analítica II', 'Química Orgánica II'],
+      'Química de Heterocíclicos y Análisis Espectroscópico': ['Química Orgánica II'],
+      'Bioquímica': ['Fisicoquímica', 'Química Orgánica II'],
+      'Farmacología General': ['Fisiología de Sistemas', 'Laboratorio de Análisis Químico'],
+      'Gestión de Calidad': ['Investigación para las Ciencias Farmacéuticas'],
 
-  <div class="semestre" id="sem5">
-    <h2>Quinto Semestre</h2>
-    <div class="ramo bloqueado" data-id="labai" data-prereqs="labaq,qa2">Laboratorio de Análisis Instrumental</div>
-    <div class="ramo bloqueado" data-id="botan" data-prereqs="qa2,qo2">Botánica y Farmacognosia</div>
-    <div class="ramo bloqueado" data-id="qheter" data-prereqs="qo2">Química de Heterocíclicos y Análisis Espectroscópico</div>
-    <div class="ramo bloqueado" data-id="bioquim" data-prereqs="fisicoq,qo2">Bioquímica</div>
-    <div class="ramo bloqueado" data-id="farmag" data-prereqs="fsis,labaq">Farmacología General</div>
-    <div class="ramo bloqueado" data-id="gestcal" data-prereqs="invest">Gestión de Calidad</div>
-  </div>
+      // Sexto al Décimo Semestre
+      'Microbiología': ['Bioquímica'],
+      'Farmacoquímica I': ['Farmacología General', 'Química de Heterocíclicos y Análisis Espectroscópico'],
+      'Farmacología de Sistemas I': ['Farmacología General'],
+      'Fisiopatología Molecular': ['Bioquímica', 'Fisiología de Sistemas'],
+      'Legislación Farmacéutica': ['Gestión de Calidad', 'Práctica Intermedia'],
+      'Fisicoquímica Farmacéutica': ['Fisicoquímica'],
 
-  <div class="semestre" id="sem6">
-    <h2>Sexto Semestre</h2>
-    <div class="ramo bloqueado" data-id="micro" data-prereqs="bioquim">Microbiología</div>
-    <div class="ramo bloqueado" data-id="farmq1" data-prereqs="farmag,qheter">Farmacoquímica I</div>
-    <div class="ramo bloqueado" data-id="farmags1" data-prereqs="farmag">Farmacología de Sistemas I</div>
-    <div class="ramo bloqueado" data-id="fismol" data-prereqs="bioquim,fsis">Fisiopatología Molecular</div>
-    <div class="ramo bloqueado" data-id="legis" data-prereqs="gestcal,pinter">Legislación Farmacéutica</div>
-    <div class="ramo bloqueado" data-id="fisicoqf" data-prereqs="fisicoq">Fisicoquímica Farmacéutica</div>
-  </div>
-</div>
+      'Fisiopatología y Semiología': ['Fisiopatología Molecular'],
+      'Farmacoquímica II': ['Farmacoquímica I'],
+      'Farmacología de Sistemas II': ['Microbiología', 'Farmacología de Sistemas I'],
+      'Salud Pública': ['Legislación Farmacéutica'],
+      'Tecnología Farmacéutica I': ['Fisicoquímica Farmacéutica', 'Legislación Farmacéutica'],
+      'Operaciones Unitarias': ['Fisicoquímica Farmacéutica'],
 
-<div class="fila-semestres" id="fila2">
-  <!-- Semestres 7 a 11 -->
-  <div class="semestre" id="sem7">
-    <h2>Séptimo Semestre</h2>
-    <div class="ramo bloqueado" data-id="fissemi" data-prereqs="fismol">Fisiopatología y Semiología</div>
-    <div class="ramo bloqueado" data-id="farmq2" data-prereqs="farmq1">Farmacoquímica II</div>
-    <div class="ramo bloqueado" data-id="farmags2" data-prereqs="micro,farmags1">Farmacología de Sistemas II</div>
-    <div class="ramo bloqueado" data-id="salpub" data-prereqs="legis">Salud Pública</div>
-    <div class="ramo bloqueado" data-id="tecfar1" data-prereqs="fisicoqf,legis">Tecnología Farmacéutica I</div>
-    <div class="ramo bloqueado" data-id="opunit" data-prereqs="fisicoqf">Operaciones Unitarias</div>
-  </div>
+      'Análisis de Medicamentos, Doping y Drogas de Abuso': ['Farmacoquímica II', 'Laboratorio de Análisis Instrumental'],
+      'Nutrición Clínica': ['Fisiopatología y Semiología'],
+      'Bioquímica Clínica': ['Fisiopatología y Semiología'],
+      'Biofarmacia y Farmacocinética': ['Farmacología General', 'Tecnología Farmacéutica I'],
+      'Tecnología Farmacéutica II': ['Tecnología Farmacéutica I', 'Operaciones Unitarias'],
+      'Administración y Gestión Farmacéutica': ['Tecnología Farmacéutica I'],
+      'Estadística Farmacéutica': ['Salud Pública', 'Estadística y Análisis de Datos'],
 
-  <div class="semestre" id="sem8">
-    <h2>Octavo Semestre</h2>
-    <div class="ramo bloqueado" data-id="anmed" data-prereqs="farmq2,labai">Análisis de Medicamentos, Doping y Drogas de Abuso</div>
-    <div class="ramo bloqueado" data-id="nutclin" data-prereqs="fissemi">Nutrición Clínica</div>
-    <div class="ramo bloqueado" data-id="bioqc" data-prereqs="fissemi">Bioquímica Clínica</div>
-    <div class="ramo bloqueado" data-id="biofarma" data-prereqs="farmag,tecfar1">Biofarmacia y Farmacocinética</div>
-    <div class="ramo bloqueado" data-id="tecfar2" data-prereqs="tecfar1,opunit">Tecnología Farmacéutica II</div>
-    <div class="ramo bloqueado" data-id="admgfar" data-prereqs="tecfar1">Administración y Gestión Farmacéutica</div>
-    <div class="ramo bloqueado" data-id="estfar" data-prereqs="salpub,estad">Estadística Farmacéutica</div>
-  </div>
+      'Farmacología Clínica': ['Biofarmacia y Farmacocinética', 'Bioquímica Clínica'],
+      'Bromatología': ['Nutrición Clínica', 'Laboratorio de Análisis Instrumental'],
+      'Toxicología': ['Bioquímica Clínica', 'Farmacología de Sistemas II'],
+      'Farmacia Asistencial': ['Administración y Gestión Farmacéutica', 'Salud Pública'],
+      'Tecnología Cosmética': ['Tecnología Farmacéutica II'],
 
-  <div class="semestre" id="sem9">
-    <h2>Noveno Semestre</h2>
-    <div class="ramo bloqueado" data-id="farmaclin" data-prereqs="biofarma,bioqc">Farmacología Clínica</div>
-    <div class="ramo bloqueado" data-id="brom" data-prereqs="nutclin,labai">Bromatología</div>
-    <div class="ramo bloqueado" data-id="toxic" data-prereqs="bioqc,farmags2">Toxicología</div>
-    <div class="ramo bloqueado" data-id="farmasit" data-prereqs="admgfar,salpub">Farmacia Asistencial</div>
-    <div class="ramo bloqueado" data-id="teccosm" data-prereqs="tecfar2">Tecnología Cosmética</div>
-  </div>
+      'Farmacia Clínica': ['Farmacología Clínica'],
+      'Práctica Profesional en Farmacia Comunitaria': ['Farmacología Clínica', 'Toxicología', 'Administración y Gestión Farmacéutica'],
+      'Biotecnología Farmacéutica': ['Fisiopatología Molecular', 'Tecnología Farmacéutica II'],
+      'Economía y Marketing Farmacéutico': ['Administración y Gestión Farmacéutica', 'Salud Pública', 'Farmacología Clínica'],
+      'Innovación y Proyectos': ['Estadística Farmacéutica'],
 
-  <div class="semestre" id="sem10">
-    <h2>Décimo Semestre</h2>
-    <div class="ramo bloqueado" data-id="farmclin" data-prereqs="farmaclin">Farmacia Clínica</div>
-    <div class="ramo bloqueado" data-id="practprof" data-prereqs="farmaclin,toxic,admgfar">Práctica Profesional en Farmacia Comunitaria</div>
-    <div class="ramo bloqueado" data-id="biotefar" data-prereqs="fismol,tecfar2">Biotecnología Farmacéutica</div>
-    <div class="ramo bloqueado" data-id="ecomark" data-prereqs="admgfar,salpub,farmaclin">Economía y Marketing Farmacéutico</div>
-    <div class="ramo bloqueado" data-id="innov" data-prereqs="estfar">Innovación y Proyectos</div>
-  </div>
+      'Actividad Final de Titulación': ['Innovación y Proyectos', 'Economía y Marketing Farmacéutico', 'Farmacia Clínica', 'Biotecnología Farmacéutica', 'Práctica Profesional en Farmacia Comunitaria']
+    };
 
-  <div class="semestre" id="sem11">
-    <h2>Onceavo Semestre</h2>
-    <div class="ramo bloqueado" data-id="actfinal" data-prereqs="innov,ecomark,farmclin,biotefar,practprof">Actividad Final de Titulación</div>
-  </div>
-</div>
+    const saved = JSON.parse(localStorage.getItem("malla-uch")) || [];
 
-<script>
-  const ramos = document.querySelectorAll('.ramo');
-  const ramosArray = Array.from(ramos);
-  const estadoRamos = {};
+    function canUnlock(course) {
+      return courses[course].every(pr => saved.includes(pr));
+    }
 
-  function inicializarEstados() {
-    ramosArray.forEach(ramo => {
-      if (ramo.dataset.prereqs === "") {
-        estadoRamos[ramo.dataset.id] = 'desbloqueado';
-      } else {
-        estadoRamos[ramo.dataset.id] = 'bloqueado';
+    const grid = document.getElementById("grid");
+    const entries = Object.entries(courses);
+    const columns = 6;
+    const rows = Math.ceil(entries.length / columns);
+
+    for (let col = 0; col < columns; col++) {
+      const sem = document.createElement("div");
+      sem.className = "semester";
+      for (let row = 0; row < rows; row++) {
+        const i = row * columns + col;
+        if (i >= entries.length) continue;
+        const [name] = entries[i];
+        const btn = document.createElement("button");
+        btn.innerText = name;
+        btn.className = saved.includes(name)
+          ? "course completed"
+          : canUnlock(name)
+          ? "course unlocked"
+          : "course locked";
+        btn.onclick = () => {
+          if (!canUnlock(name)) return;
+          const idx = saved.indexOf(name);
+          if (idx >= 0) saved.splice(idx, 1);
+          else saved.push(name);
+          localStorage.setItem("malla-uch", JSON.stringify(saved));
+          location.reload();
+        };
+        sem.appendChild(btn);
       }
-    });
-  }
-
-  function actualizarDesbloqueo() {
-    ramosArray.forEach(ramo => {
-      if (estadoRamos[ramo.dataset.id] === 'aprobado') return;
-
-      const prereqs = ramo.dataset.prereqs.split(',').map(s => s.trim()).filter(s => s !== "");
-      if (prereqs.length === 0) {
-        estadoRamos[ramo.dataset.id] = 'desbloqueado';
-      } else {
-        const todosAprobados = prereqs.every(id => estadoRamos[id] === 'aprobado');
-        estadoRamos[ramo.dataset.id] = todosAprobados ? 'desbloqueado' : 'bloqueado';
-      }
-    });
-  }
-
-  function actualizarClases() {
-    ramosArray.forEach(ramo => {
-      ramo.classList.remove('bloqueado', 'desbloqueado', 'aprobado');
-      ramo.classList.add(estadoRamos[ramo.dataset.id]);
-    });
-  }
-
-  function onClickRamo(event) {
-    const ramo = event.currentTarget;
-    const id = ramo.dataset.id;
-    const estado = estadoRamos[id];
-
-    if (estado === 'bloqueado') return;
-
-    if (estado === 'desbloqueado') estadoRamos[id] = 'aprobado';
-    else if (estado === 'aprobado') estadoRamos[id] = 'desbloqueado';
-
-    actualizarDesbloqueo();
-    actualizarClases();
-  }
-
-  ramosArray.forEach(ramo => {
-    ramo.addEventListener('click', onClickRamo);
-  });
-
-  inicializarEstados();
-  actualizarDesbloqueo();
-  actualizarClases();
-</script>
-
+      grid.appendChild(sem);
+    }
+  </script>
 </body>
 </html>
