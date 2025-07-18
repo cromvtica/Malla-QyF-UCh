@@ -4,13 +4,120 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Malla Interactiva QyF</title>
+  <title>Malla Curricular Interactiva</title>
   <link rel="stylesheet" href="style.css">
+  <script src="script.js" defer></script>
 </head>
 <body>
-  <h1>Malla Interactiva Química y Farmacia</h1>
-  <div id="malla" class="malla"></div>
+  <h1>Malla Curricular Interactiva</h1>
 
-  <script src="script.js"></script>
+  <!-- Primer Semestre -->
+  <div class="semestre">
+    <div id="quimica-general-i" class="ramo">Química General I</div>
+    <div id="tecnicas-laboratorio-quimico" class="ramo">Técnicas de Laboratorio Químico</div>
+    <div id="mecanica" class="ramo">Mecánica</div>
+    <div id="introduccion-calculo" class="ramo">Introducción al Cálculo</div>
+    <div id="quimico-farmaceutico-accion" class="ramo">Químico Farmacéutico y su Acción</div>
+    <div id="ingles-i" class="ramo">Inglés I</div>
+  </div>
+
+  <!-- Segundo Semestre -->
+  <div class="semestre">
+    <div id="quimica-general-ii" class="ramo" data-prerrequisitos="quimica-general-i">Química General II</div>
+    <div id="laboratorio-quimica-general" class="ramo" data-prerrequisitos="quimica-general-i,tecnicas-laboratorio-quimico">Laboratorio de Química General</div>
+    <div id="electromagnetismo" class="ramo" data-prerrequisitos="introduccion-calculo,mecanica">Electromagnetismo</div>
+    <div id="calculo-diferencial-integral" class="ramo" data-prerrequisitos="introduccion-calculo">Cálculo Diferencial e Integral</div>
+    <div id="biologia-general" class="ramo">Biología General</div>
+    <div id="medicamento-evolucion" class="ramo" data-prerrequisitos="quimico-farmaceutico-accion">Medicamento y su Evolución</div>
+    <div id="ingles-ii" class="ramo" data-prerrequisitos="ingles-i">Inglés II</div>
+  </div>
+
+  <!-- Tercer Semestre -->
+  <div class="semestre">
+    <div id="quimica-organica-i" class="ramo" data-prerrequisitos="quimica-general-ii">Química Orgánica I</div>
+    <div id="quimica-analitica-i" class="ramo" data-prerrequisitos="quimica-general-ii,laboratorio-quimica-general">Química Analítica I</div>
+    <div id="laboratorio-quimica-organica" class="ramo" data-prerrequisitos="quimica-general-ii,laboratorio-quimica-general">Laboratorio de Química Orgánica</div>
+    <div id="estadistica-analisis-datos" class="ramo" data-prerrequisitos="calculo-diferencial-integral">Estadística y Análisis de Datos</div>
+    <div id="fisiologia-celular" class="ramo" data-prerrequisitos="biologia-general,quimica-general-i,electromagnetismo">Fisiología Celular</div>
+    <div id="investigacion-ciencias-farmaceuticas" class="ramo" data-prerrequisitos="medicamento-evolucion,ingles-ii">Investigación para las Ciencias Farmacéuticas</div>
+    <div id="ingles-iii" class="ramo" data-prerrequisitos="ingles-ii">Inglés III</div>
+  </div>
+
+  <!-- Cuarto Semestre -->
+  <div class="semestre">
+    <div id="quimica-organica-ii" class="ramo" data-prerrequisitos="quimica-organica-i">Química Orgánica II</div>
+    <div id="laboratorio-analisis-quimico" class="ramo" data-prerrequisitos="quimica-analitica-i,estadistica-analisis-datos">Laboratorio de Análisis Químico</div>
+    <div id="quimica-analitica-ii" class="ramo" data-prerrequisitos="quimica-analitica-i">Química Analítica II</div>
+    <div id="fisicoquimica" class="ramo" data-prerrequisitos="mecanica,quimica-organica-i">Fisicoquímica</div>
+    <div id="fisiologia-sistemas" class="ramo" data-prerrequisitos="fisiologia-celular">Fisiología de Sistemas</div>
+    <div id="practica-intermedia" class="ramo" data-prerrequisitos="investigacion-ciencias-farmaceuticas">Práctica Intermedia</div>
+    <div id="ingles-iv" class="ramo" data-prerrequisitos="ingles-iii">Inglés IV</div>
+  </div>
+
+  <!-- Quinto Semestre -->
+  <div class="semestre">
+    <div id="laboratorio-analisis-instrumental" class="ramo" data-prerrequisitos="laboratorio-analisis-quimico,quimica-analitica-ii">Laboratorio de Análisis Instrumental</div>
+    <div id="botanica-farmacognosia" class="ramo" data-prerrequisitos="quimica-analitica-ii,quimica-organica-ii">Botánica y Farmacognosia</div>
+    <div id="quimica-heterociclicos-espectroscopia" class="ramo" data-prerrequisitos="quimica-organica-ii">Química de Heterocíclicos y Análisis Espectroscópico</div>
+    <div id="bioquimica" class="ramo" data-prerrequisitos="fisicoquimica,quimica-organica-ii">Bioquímica</div>
+    <div id="farmacologia-general" class="ramo" data-prerrequisitos="fisiologia-sistemas,laboratorio-analisis-quimico">Farmacología General</div>
+    <div id="gestion-calidad" class="ramo" data-prerrequisitos="investigacion-ciencias-farmaceuticas">Gestión de Calidad</div>
+  </div>
+
+  <!-- Sexto Semestre -->
+  <div class="semestre">
+    <div id="microbiologia" class="ramo" data-prerrequisitos="bioquimica">Microbiología</div>
+    <div id="farmacoquimica-i" class="ramo" data-prerrequisitos="farmacologia-general,quimica-heterociclicos-espectroscopia">Farmacoquímica I</div>
+    <div id="farmacologia-sistemas-i" class="ramo" data-prerrequisitos="farmacologia-general">Farmacología de Sistemas I</div>
+    <div id="fisiopatologia-molecular" class="ramo" data-prerrequisitos="bioquimica,fisiologia-sistemas">Fisiopatología Molecular</div>
+    <div id="legislacion-farmaceutica" class="ramo" data-prerrequisitos="gestion-calidad,practica-intermedia">Legislación Farmacéutica</div>
+    <div id="fisicoquimica-farmaceutica" class="ramo" data-prerrequisitos="fisicoquimica">Fisicoquímica Farmacéutica</div>
+  </div>
+
+  <!-- Séptimo Semestre -->
+  <div class="semestre">
+    <div id="fisiopatologia-semiologia" class="ramo" data-prerrequisitos="fisiopatologia-molecular">Fisiopatología y Semiología</div>
+    <div id="farmacoquimica-ii" class="ramo" data-prerrequisitos="farmacoquimica-i">Farmacoquímica II</div>
+    <div id="farmacologia-sistemas-ii" class="ramo" data-prerrequisitos="microbiologia,farmacologia-sistemas-i">Farmacología de Sistemas II</div>
+    <div id="salud-publica" class="ramo" data-prerrequisitos="legislacion-farmaceutica">Salud Pública</div>
+    <div id="tecnologia-farmaceutica-i" class="ramo" data-prerrequisitos="fisicoquimica-farmaceutica,legislacion-farmaceutica">Tecnología Farmacéutica I</div>
+    <div id="operaciones-unitarias" class="ramo" data-prerrequisitos="fisicoquimica-farmaceutica">Operaciones Unitarias</div>
+  </div>
+
+  <!-- Octavo Semestre -->
+  <div class="semestre">
+    <div id="analisis-medicamentos" class="ramo" data-prerrequisitos="farmacoquimica-ii,laboratorio-analisis-instrumental">Análisis de Medicamentos, Doping y Drogas de Abuso</div>
+    <div id="nutricion-clinica" class="ramo" data-prerrequisitos="fisiopatologia-semiologia">Nutrición Clínica</div>
+    <div id="bioquimica-clinica" class="ramo" data-prerrequisitos="fisiopatologia-semiologia">Bioquímica Clínica</div>
+    <div id="biofarmacia-farmacocinetica" class="ramo" data-prerrequisitos="farmacologia-general,tecnologia-farmaceutica-i">Biofarmacia y Farmacocinética</div>
+    <div id="tecnologia-farmaceutica-ii" class="ramo" data-prerrequisitos="tecnologia-farmaceutica-i,operaciones-unitarias">Tecnología Farmacéutica II</div>
+    <div id="administracion-gestion-farmaceutica" class="ramo" data-prerrequisitos="tecnologia-farmaceutica-i">Administración y Gestión Farmacéutica</div>
+    <div id="estadistica-farmaceutica" class="ramo" data-prerrequisitos="salud-publica,estadistica-analisis-datos">Estadística Farmacéutica</div>
+  </div>
+
+  <!-- Noveno Semestre -->
+  <div class="semestre">
+    <div id="farmacologia-clinica" class="ramo" data-prerrequisitos="biofarmacia-farmacocinetica,bioquimica-clinica">Farmacología Clínica</div>
+    <div id="bromatologia" class="ramo" data-prerrequisitos="nutricion-clinica,laboratorio-analisis-instrumental">Bromatología</div>
+    <div id="toxicologia" class="ramo" data-prerrequisitos="bioquimica-clinica,farmacologia-sistemas-ii">Toxicología</div>
+    <div id="farmacia-asistencial" class="ramo" data-prerrequisitos="administracion-gestion-farmaceutica,salud-publica">Farmacia Asistencial</div>
+    <div id="tecnologia-cosmetica" class="ramo" data-prerrequisitos="tecnologia-farmaceutica-ii">Tecnología Cosmética</div>
+  </div>
+
+  <!-- Décimo Semestre -->
+  <div class="semestre">
+    <div id="farmacia-clinica" class="ramo" data-prerrequisitos="farmacologia-clinica">Farmacia Clínica</div>
+    <div id="practica-profesional-farmacia" class="ramo" data-prerrequisitos="farmacologia-clinica,toxicologia,administracion-gestion-farmaceutica">Práctica Profesional en Farmacia Comunitaria</div>
+    <div id="biotecnologia-farmaceutica" class="ramo" data-prerrequisitos="fisiopatologia-molecular,tecnologia-farmaceutica-ii">Biotecnología Farmacéutica</div>
+    <div id="economia-marketing-farmaceutico" class="ramo" data-prerrequisitos="administracion-gestion-farmaceutica,salud-publica,farmacologia-clinica">Economía y Marketing Farmacéutico</div>
+    <div id="innovacion-proyectos" class="ramo" data-prerrequisitos="estadistica-farmaceutica">Innovación y Proyectos</div>
+  </div>
+
+  <!-- Onceavo Semestre -->
+  <div class="semestre">
+    <div id="actividad-final-titulacion" class="ramo" data-prerrequisitos="innovacion-proyectos,economia-marketing-farmaceutico,farmacia-clinica,biotecnologia-farmaceutica,practica-profesional-farmacia">Actividad Final de Titulación</div>
+  </div>
+
 </body>
 </html>
+
