@@ -1,215 +1,268 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Malla Química y Farmacia UCh</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background-color: #ffe6f0;
-      margin: 20px;
-      text-align: center;
-    }
-    h1 {
-      color: #c2185b;
-    }
-    .grid {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 50px;
-      margin-top: 20px;
-    }
-    .column {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-    .box {
-      padding: 10px;
-      border-radius: 10px;
-      background-color: #eee;
-      color: #333;
-      cursor: pointer;
-      min-width: 180px;
-      transition: background-color 0.3s;
-    }
-    .approved {
-      background-color: #f06292 !important;
-      color: white;
-    }
-    .locked {
-      background-color: #ddd !important;
-      color: #aaa;
-      cursor: not-allowed;
-    }
-    .semester-title {
-      font-weight: bold;
-      margin-bottom: 10px;
-    }
-  </style>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Malla Curricular Interactiva Completa</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+    background-color: #fff;
+    color: #333;
+  }
+  h1 {
+    text-align: center;
+    margin-bottom: 30px;
+  }
+  .malla-container {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    overflow-x: auto;
+    padding-bottom: 20px;
+  }
+  .semestre {
+    display: flex;
+    flex-direction: column;
+    min-width: 180px;
+    border: 2px solid #D85C7A;
+    border-radius: 8px;
+    padding: 10px;
+    background-color: #fdf0f4;
+  }
+  .semestre h2 {
+    text-align: center;
+    margin-bottom: 15px;
+    color: #D85C7A;
+  }
+  .ramo {
+    user-select: none;
+    margin-bottom: 12px;
+    padding: 10px;
+    border-radius: 6px;
+    cursor: pointer;
+    box-shadow: 0 2px 5px rgb(0 0 0 / 0.15);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 50px;
+    font-weight: 600;
+    font-size: 14px;
+    text-align: center;
+    line-height: 1.2;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+  }
+  .ramo.por-cursar {
+    background-color: #D85C7A; /* rosa clavo */
+    color: white;
+  }
+  .ramo.aprobado {
+    background-color: #D1006F; /* fucsia */
+    color: white;
+  }
+  .ramo.bloqueado {
+    background-color: #D3D3D3; /* gris claro */
+    color: #777;
+    cursor: not-allowed;
+    box-shadow: none;
+  }
+  .ramo:hover:not(.bloqueado) {
+    box-shadow: 0 4px 12px rgba(209, 0, 111, 0.7);
+  }
+</style>
 </head>
 <body>
-  <h1>Malla Química y Farmacia UCh</h1>
-  <div class="grid" id="grid"></div>
 
-  <script>
-    const coursesBySemester = [
-      {
-        title: "1º Semestre",
-        courses: [
-          "Química General I",
-          "Técnicas de Laboratorio Químico",
-          "Mecánica",
-          "Introducción al Cálculo",
-          "Químico Farmacéutico y su Acción",
-          "Inglés I",
-        ],
-      },
-      {
-        title: "2º Semestre",
-        courses: [
-          "Química General II",
-          "Laboratorio de Química General",
-          "Electromagnetismo",
-          "Calculo Diferencial e Integral",
-          "Biología General",
-          "Medicamento y su Evolución",
-          "Inglés II",
-        ],
-      },
-      {
-        title: "3º Semestre",
-        courses: [
-          "Química Orgánica I",
-          "Química Analítica I",
-          "Laboratorio de Química Orgánica",
-          "Estadística y Análisis de Datos",
-          "Fisiología Celular",
-          "Investigación para las Ciencias Farmacéuticas",
-          "Inglés III",
-        ],
-      },
-      {
-        title: "4º Semestre",
-        courses: [
-          "Química Orgánica II",
-          "Laboratorio de Análisis Químico",
-          "Química Analítica II",
-          "Fisicoquímica",
-          "Fisiología de Sistemas",
-          "Práctica Intermedia",
-          "Inglés IV",
-        ],
-      },
-      {
-        title: "5º Semestre",
-        courses: [
-          "Laboratorio de Análisis Instrumental",
-          "Botánica y Farmacognosia",
-          "Química de Heterocíclicos y Análisis Espectroscópico",
-          "Bioquímica",
-          "Farmacología General",
-          "Gestión de Calidad",
-        ],
-      },
-      {
-        title: "6º Semestre",
-        courses: [
-          "Microbiología",
-          "Farmacoquímica I",
-          "Farmacología de Sistemas I",
-          "Fisiopatología Molecular",
-          "Legislación Farmacéutica",
-          "Fisicoquímica Farmacéutica",
-        ],
-      },
-      {
-        title: "7º Semestre",
-        courses: [
-          "Fisiopatología y Semiología",
-          "Farmacoquímica II",
-          "Farmacología de Sistemas II",
-          "Salud Pública",
-          "Tecnología Farmacéutica I",
-          "Operaciones Unitarias",
-        ],
-      },
-      {
-        title: "8º Semestre",
-        courses: [
-          "Análisis de Medicamentos, Doping y Drogas de Abuso",
-          "Nutrición Clínica",
-          "Bioquímica Clínica",
-          "Biofarmacia y Farmacocinética",
-          "Tecnología Farmacéutica II",
-          "Administración y Gestión Farmacéutica",
-          "Estadística Farmacéutica",
-        ],
-      },
-      {
-        title: "9º Semestre",
-        courses: [
-          "Farmacología Clínica",
-          "Bromatología",
-          "Toxicología",
-          "Farmacia Asistencial",
-          "Tecnología Cosmética",
-        ],
-      },
-      {
-        title: "10º Semestre",
-        courses: [
-          "Farmacia Clínica",
-          "Práctica Profesional en Farmacia Comunitaria",
-          "Biotecnología Farmacéutica",
-          "Economía y Marketing Farmacéutico",
-          "Innovación y Proyectos",
-        ],
-      },
-      {
-        title: "11º Semestre",
-        courses: [
-          "Actividad Final de Titulación",
-        ],
-      },
-    ];
+<h1>Malla Curricular Interactiva Completa</h1>
+<div class="malla-container" id="malla-container"></div>
 
-    const grid = document.getElementById("grid");
-    const savedState = JSON.parse(localStorage.getItem("approvedCourses") || "{}");
+<script>
+  // Malla con prerrequisitos completos
+  const mallaOriginal = {
+    "Primer Semestre": [
+      { nombre: "Química General I", prereqs: [] },
+      { nombre: "Técnicas de Laboratorio Químico", prereqs: [] },
+      { nombre: "Mecánica", prereqs: [] },
+      { nombre: "Introducción al Cálculo", prereqs: [] },
+      { nombre: "Químico Farmacéutico y su Acción", prereqs: [] },
+      { nombre: "Inglés I", prereqs: [] }
+    ],
+    "Segundo Semestre": [
+      { nombre: "Química General II", prereqs: ["Química General I"] },
+      { nombre: "Laboratorio de Química General", prereqs: ["Química General I", "Técnicas de Laboratorio Químico"] },
+      { nombre: "Electromagnetismo", prereqs: ["Introducción al Cálculo", "Mecánica"] },
+      { nombre: "Calculo Diferencial e Integral", prereqs: ["Introducción al Cálculo"] },
+      { nombre: "Biología General", prereqs: [] },
+      { nombre: "Medicamento y su Evolución", prereqs: ["Químico Farmacéutico y su Acción"] },
+      { nombre: "Inglés II", prereqs: ["Inglés I"] }
+    ],
+    "Tercer Semestre": [
+      { nombre: "Química Orgánica I", prereqs: ["Química General II"] },
+      { nombre: "Química Analítica I", prereqs: ["Química General II", "Laboratorio de Química General"] },
+      { nombre: "Laboratorio de Química Orgánica", prereqs: ["Química General II", "Laboratorio de Química General"] },
+      { nombre: "Estadística y Análisis de Datos", prereqs: ["Calculo Diferencial e Integral"] },
+      { nombre: "Fisiología Celular", prereqs: ["Biología General", "Química General I", "Electromagnetismo"] },
+      { nombre: "Investigación para las Ciencias Farmacéuticas", prereqs: ["Medicamento y su Evolución", "Inglés II"] },
+      { nombre: "Inglés III", prereqs: ["Inglés II"] }
+    ],
+    "Cuarto Semestre": [
+      { nombre: "Química Orgánica II", prereqs: ["Química Orgánica I"] },
+      { nombre: "Laboratorio de Análisis Químico", prereqs: ["Química Analítica I", "Estadística y Análisis de Datos"] },
+      { nombre: "Química Analítica II", prereqs: ["Química Analítica I"] },
+      { nombre: "Fisicoquímica", prereqs: ["Mecánica", "Química Orgánica I"] },
+      { nombre: "Fisiología de Sistemas", prereqs: ["Fisiología Celular"] },
+      { nombre: "Práctica Intermedia", prereqs: ["Investigación para las Ciencias Farmacéuticas"] },
+      { nombre: "Inglés IV", prereqs: ["Inglés III"] }
+    ],
+    "Quinto Semestre": [
+      { nombre: "Laboratorio de Análisis Instrumental", prereqs: ["Laboratorio de Análisis Químico", "Química Analítica II"] },
+      { nombre: "Botánica y Farmacognosia", prereqs: ["Química Analítica II", "Química Orgánica II"] },
+      { nombre: "Química de Heterocíclicos y Análisis Espectroscópico", prereqs: ["Química Orgánica II"] },
+      { nombre: "Bioquímica", prereqs: ["Fisicoquímica", "Química Orgánica II"] },
+      { nombre: "Farmacología General", prereqs: ["Fisiología de Sistemas", "Laboratorio de Análisis Químico"] },
+      { nombre: "Gestión de Calidad", prereqs: ["Investigación para las Ciencias Farmacéuticas"] }
+    ],
+    "Sexto Semestre": [
+      { nombre: "Microbiología", prereqs: ["Bioquímica"] },
+      { nombre: "Farmacoquímica I", prereqs: ["Farmacología General", "Química de Heterocíclicos y Análisis Espectroscópico"] },
+      { nombre: "Farmacología de Sistemas I", prereqs: ["Farmacología General"] },
+      { nombre: "Fisiopatología Molecular", prereqs: ["Bioquímica", "Fisiología de Sistemas"] },
+      { nombre: "Legislación Farmacéutica", prereqs: ["Gestión de Calidad", "Práctica Intermedia"] },
+      { nombre: "Fisicoquímica Farmacéutica", prereqs: ["Fisicoquímica"] }
+    ],
+    "Séptimo Semestre": [
+      { nombre: "Fisiopatología y Semiología", prereqs: ["Fisiopatología Molecular"] },
+      { nombre: "Farmacoquímica II", prereqs: ["Farmacoquímica I"] },
+      { nombre: "Farmacología de Sistemas II", prereqs: ["Microbiología", "Farmacología de Sistemas I"] },
+      { nombre: "Salud Pública", prereqs: ["Legislación Farmacéutica"] },
+      { nombre: "Tecnología Farmacéutica I", prereqs: ["Fisicoquímica Farmacéutica", "Legislación Farmacéutica"] },
+      { nombre: "Operaciones Unitarias", prereqs: ["Fisicoquímica Farmacéutica"] }
+    ],
+    "Octavo Semestre": [
+      { nombre: "Análisis de Medicamentos, Doping y Drogas de Abuso", prereqs: ["Farmacoquímica II", "Laboratorio de Análisis Instrumental"] },
+      { nombre: "Nutrición Clínica", prereqs: ["Fisiopatología y Semiología"] },
+      { nombre: "Bioquímica Clínica", prereqs: ["Fisiopatología y Semiología"] },
+      { nombre: "Biofarmacia y Farmacocinética", prereqs: ["Farmacología General", "Tecnología Farmacéutica I"] },
+      { nombre: "Tecnología Farmacéutica II", prereqs: ["Tecnología Farmacéutica I", "Operaciones Unitarias"] },
+      { nombre: "Administración y Gestión Farmacéutica", prereqs: ["Tecnología Farmacéutica I"] },
+      { nombre: "Estadística Farmacéutica", prereqs: ["Salud Pública", "Estadística y Análisis de Datos"] }
+    ],
+    "Noveno Semestre": [
+      { nombre: "Farmacología Clínica", prereqs: ["Biofarmacia y Farmacocinética", "Bioquímica Clínica"] },
+      { nombre: "Bromatología", prereqs: ["Nutrición Clínica", "Laboratorio de Análisis Instrumental"] },
+      { nombre: "Toxicología", prereqs: ["Bioquímica Clínica", "Farmacología de Sistemas II"] },
+      { nombre: "Farmacia Asistencial", prereqs: ["Administración y Gestión Farmacéutica", "Salud Pública"] },
+      { nombre: "Tecnología Cosmética", prereqs: ["Tecnología Farmacéutica II"] }
+    ],
+    "Décimo Semestre": [
+      { nombre: "Farmacia Clínica", prereqs: ["Farmacología Clínica"] },
+      { nombre: "Práctica Profesional en Farmacia Comunitaria", prereqs: ["Farmacología Clínica", "Toxicología", "Administración y Gestión Farmacéutica"] },
+      { nombre: "Biotecnología Farmacéutica", prereqs: ["Fisiopatología Molecular", "Tecnología Farmacéutica II"] },
+      { nombre: "Economía y Marketing Farmacéutico", prereqs: ["Administración y Gestión Farmacéutica", "Salud Pública", "Farmacología Clínica"] },
+      { nombre: "Innovación y Proyectos", prereqs: ["Estadística Farmacéutica"] }
+    ],
+    "Onceavo Semestre": [
+      { nombre: "Actividad Final de Titulación", prereqs: ["Innovación y Proyectos", "Economía y Marketing Farmacéutico", "Farmacia Clínica", "Biotecnología Farmacéutica", "Práctica Profesional en Farmacia Comunitaria"] }
+    ]
+  };
 
-    coursesBySemester.forEach((semester) => {
-      const column = document.createElement("div");
-      column.className = "column";
+  // Inicializa estado con prerrequisitos: desbloquea los que no tienen prereqs
+  function inicializarEstado() {
+    let estadoGuardado = localStorage.getItem('mallaEstado');
+    if (estadoGuardado) return JSON.parse(estadoGuardado);
 
-      const title = document.createElement("div");
-      title.className = "semester-title";
-      title.textContent = semester.title;
-      column.appendChild(title);
+    let estadoInicial = {};
+    for (const semestre in mallaOriginal) {
+      estadoInicial[semestre] = mallaOriginal[semestre].map(ramo => {
+        return {
+          nombre: ramo.nombre,
+          estado: ramo.prereqs.length === 0 ? 'por-cursar' : 'bloqueado',
+          prereqs: ramo.prereqs
+        };
+      });
+    }
+    return estadoInicial;
+  }
 
-      semester.courses.forEach((course) => {
-        const box = document.createElement("div");
-        box.className = "box";
-        box.textContent = course;
+  let mallaEstado = inicializarEstado();
 
-        if (savedState[course]) {
-          box.classList.add("approved");
+  const container = document.getElementById('malla-container');
+
+  function obtenerEstadoRamo(nombre) {
+    for (const semestre in mallaEstado) {
+      const ramo = mallaEstado[semestre].find(r => r.nombre === nombre);
+      if (ramo) return ramo.estado;
+    }
+    return null;
+  }
+
+  function prereqsAprobados(prereqs) {
+    return prereqs.every(p => obtenerEstadoRamo(p) === 'aprobado');
+  }
+
+  function actualizarBloqueos() {
+    for (const semestre in mallaEstado) {
+      mallaEstado[semestre].forEach(ramo => {
+        if (ramo.estado !== 'aprobado') {
+          if (prereqsAprobados(ramo.prereqs)) {
+            ramo.estado = 'por-cursar';
+          } else {
+            ramo.estado = 'bloqueado';
+          }
         }
+      });
+    }
+  }
 
-        box.addEventListener("click", () => {
-          const isApproved = box.classList.contains("approved");
-          box.classList.toggle("approved");
+  function crearRamoDiv(ramo) {
+    const div = document.createElement('div');
+    div.classList.add('ramo', ramo.estado);
+    div.textContent = ramo.nombre;
 
-          savedState[course] = !isApproved;
-          localStorage.setItem("approvedCourses", JSON.stringify(savedState));
-        });
+    if (ramo.estado !== 'bloqueado') {
+      div.addEventListener('click', () => {
+        if (ramo.estado === 'por-cursar') {
+          ramo.estado = 'aprobado';
+        } else if (ramo.estado === 'aprobado') {
+          ramo.estado = 'por-cursar';
+        }
+        actualizarBloqueos();
+        guardarEstado();
+        renderizarMalla();
+      });
+    }
+    return div;
+  }
 
-        column.appendChild(box);
+  function guardarEstado() {
+    localStorage.setItem('mallaEstado', JSON.stringify(mallaEstado));
+  }
+
+  function renderizarMalla() {
+    container.innerHTML = '';
+    for (const semestre in mallaEstado) {
+      const divSem = document.createElement('div');
+      divSem.classList.add('semestre');
+      divSem.dataset.semestre = semestre;
+
+      const titulo = document.createElement('h2');
+      titulo.textContent = semestre;
+      divSem.appendChild(titulo);
+
+      mallaEstado[semestre].forEach(ramo => {
+        const ramoDiv = crearRamoDiv(ramo);
+        divSem.appendChild(ramoDiv);
       });
 
-      grid.appendChild(column);
-    });
-  </script>
+      container.appendChild(divSem);
+    }
+  }
+
+  actualizarBloqueos();
+  renderizarMalla();
+
+</script>
+
 </body>
 </html>
