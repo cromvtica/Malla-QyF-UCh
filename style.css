@@ -1,68 +1,69 @@
-/* Colores */
-:root {
-  --color-rosa: #ff69b4;
-  --color-fuscia: #c71585;
-  --color-gris-claro: #d3d3d3;
-  --color-blanco: #fff;
-  --color-negro: #000;
-}
-
-/* Estilos generales */
 body {
+  background-color: #ffe4f0;
   font-family: Arial, sans-serif;
-  background-color: #fff0f6;
-  color: var(--color-negro);
   margin: 0;
-  padding: 20px;
-}
-
-h1 {
-  color: var(--color-rosa);
+  padding: 0;
   text-align: center;
 }
 
-/* Contenedor vertical por semestre */
-.semestre {
+h1 {
+  margin: 20px;
+  color: #c2185b;
+}
+
+.grid-container {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 10px;
+  padding: 20px;
+  overflow-x: auto;
+}
+
+.semester {
   display: flex;
   flex-direction: column;
-  margin-bottom: 30px;
-  border-left: 4px solid var(--color-rosa);
-  padding-left: 10px;
+  align-items: center;
+  background-color: #fff0f6;
+  border: 2px solid #ffc1e3;
+  padding: 10px;
+  border-radius: 10px;
+  min-width: 180px;
 }
 
-/* Cada ramo */
-.ramo {
-  background-color: var(--color-gris-claro);
-  margin: 6px 0;
-  padding: 10px 15px;
-  border-radius: 5px;
+.semester h2 {
+  color: #ad1457;
+  font-size: 16px;
+  margin-bottom: 10px;
+}
+
+.course {
+  margin: 5px 0;
+  padding: 8px;
+  width: 160px;
+  background-color: #f8bbd0;
+  color: #000;
+  border: none;
+  border-radius: 8px;
   cursor: pointer;
-  user-select: none;
-  transition: background-color 0.3s;
+  font-size: 13px;
+  transition: 0.3s;
 }
 
-/* Ramo aprobado */
-.ramo.aprobado {
-  background-color: var(--color-fuscia);
-  color: var(--color-blanco);
+.course:hover {
+  background-color: #f06292;
+  color: white;
 }
 
-/* Ramo bloqueado */
-.ramo.bloqueado {
-  background-color: #f0e0e0;
-  color: #a0a0a0;
+.course:disabled {
+  background-color: #e0e0e0;
   cursor: not-allowed;
+  color: #888;
 }
 
-/* Hover solo para ramos desbloqueados */
-.ramo:not(.bloqueado):hover {
-  background-color: #ff85c1;
-  color: var(--color-blanco);
-}
-
-/* Contenedor general de la malla */
-.malla {
-  max-width: 600px;
-  margin: auto;
+.course.approved {
+  background-color: fuchsia;
+  color: white;
 }
 
