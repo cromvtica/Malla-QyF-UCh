@@ -10,20 +10,19 @@
       font-family: Arial, sans-serif;
       margin: 0;
       padding: 0;
-      text-align: center;
     }
 
     h1 {
-      margin: 20px;
+      text-align: center;
       color: #c2185b;
+      margin: 20px 0;
     }
 
     .grid-container {
-      display: flex;
-      flex-direction: row;
-      align-items: flex-start;
-      justify-content: center;
-      gap: 10px;
+      display: grid;
+      grid-auto-flow: column;
+      grid-auto-columns: min-content;
+      gap: 15px;
       padding: 20px;
       overflow-x: auto;
     }
@@ -43,10 +42,11 @@
       color: #ad1457;
       font-size: 16px;
       margin-bottom: 10px;
+      text-align: center;
     }
 
     .course {
-      margin: 5px 0;
+      margin: 6px 0;
       padding: 8px;
       width: 160px;
       background-color: #f8bbd0;
@@ -83,21 +83,28 @@
     const semesters = {
       'I Semestre': [
         { name: 'Química General I', id: '1' },
-        { name: 'Técnicas de Laboratorio Clínico', id: '2' },
+        { name: 'Técnicas de Lab. Clínico', id: '2' },
         { name: 'Matemática', id: '3' },
-        { name: 'Introducción a la QyF', id: '4' },
-        { name: 'Curso de Formación General', id: '5' },
+        { name: 'Intro QyF', id: '4' },
+        { name: 'Curso FG', id: '5' },
         { name: 'Inglés I', id: '6' },
       ],
       'II Semestre': [
         { name: 'Química General II', id: '7', reqs: ['1'] },
-        { name: 'Laboratorio de Q. General', id: '8', reqs: ['1'] },
+        { name: 'Lab Q. General', id: '8', reqs: ['1'] },
         { name: 'Electromagnetismo', id: '9' },
-        { name: 'Cálculo Diferencial e Integral', id: '10' },
-        { name: 'El Químico Farmacéutico y su Rol', id: '11' },
+        { name: 'Cálculo Diferencial', id: '10' },
+        { name: 'Rol QF', id: '11' },
         { name: 'Inglés II', id: '12', reqs: ['6'] },
       ],
-      // Agrega más semestres aquí...
+      'III Semestre': [
+        { name: 'Química Orgánica I', id: '13', reqs: ['7'] },
+        { name: 'Lab Q. Orgánica', id: '14', reqs: ['13'] },
+        { name: 'Estadística', id: '15', reqs: ['10'] },
+        { name: 'Filosofía', id: '16' },
+        { name: 'Inglés III', id: '17', reqs: ['12'] },
+      ],
+      // Puedes seguir agregando más semestres aquí...
     };
 
     const approvedCourses = new Set();
@@ -131,7 +138,9 @@
     }
 
     function updateCourses() {
-      document.getElementById("course-grid").innerHTML = "";
+      const grid = document.getElementById("course-grid");
+      grid.innerHTML = "";
+
       for (const [semesterName, courses] of Object.entries(semesters)) {
         const semesterCol = document.createElement("div");
         semesterCol.className = "semester";
@@ -145,7 +154,7 @@
           semesterCol.appendChild(button);
         });
 
-        document.getElementById("course-grid").appendChild(semesterCol);
+        grid.appendChild(semesterCol);
       }
     }
 
