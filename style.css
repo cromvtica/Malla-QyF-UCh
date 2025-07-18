@@ -1,0 +1,38 @@
+
+body {
+    font-family: Arial, sans-serif;
+    background: #f5f5f5;
+    margin: 0;
+    padding: 1rem;
+}
+
+h1 {
+    text-align: center;
+    color: #003366;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 1rem;
+    padding: 1rem;
+}
+
+.ramo {
+    background: white;
+    border: 2px solid #ccc;
+    padding: 1rem;
+    border-radius: 10px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.ramo:hover {
+    background: #eef;
+}
+
+.ramo.activo {
+    background: #cce5cc;
+    border-color: #66bb66;
+}
