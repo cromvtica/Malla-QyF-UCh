@@ -1,173 +1,215 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Malla Química y Farmacia UCh</title>
   <style>
     body {
-      font-family: sans-serif;
-      background-color: #fff0f5;
+      font-family: Arial, sans-serif;
+      background-color: #ffe6f0;
+      margin: 20px;
       text-align: center;
     }
     h1 {
-      color: #d63384;
+      color: #c2185b;
     }
-    .grid-container {
+    .grid {
       display: flex;
       flex-wrap: wrap;
       justify-content: center;
-      gap: 40px;
-      margin: 30px;
+      gap: 50px;
+      margin-top: 20px;
     }
-    .semester {
+    .column {
       display: flex;
       flex-direction: column;
       gap: 10px;
-      background-color: #ffe6f0;
-      border: 2px solid #d63384;
+    }
+    .box {
       padding: 10px;
       border-radius: 10px;
-      width: 180px;
-    }
-    .course {
-      padding: 8px;
-      border-radius: 8px;
-      border: none;
+      background-color: #eee;
+      color: #333;
       cursor: pointer;
+      min-width: 180px;
+      transition: background-color 0.3s;
+    }
+    .approved {
+      background-color: #f06292 !important;
+      color: white;
     }
     .locked {
-      background-color: lightgray;
-      color: #555;
+      background-color: #ddd !important;
+      color: #aaa;
+      cursor: not-allowed;
     }
-    .unlocked {
-      background-color: pink;
-    }
-    .completed {
-      background-color: fuchsia;
-      color: white;
+    .semester-title {
+      font-weight: bold;
+      margin-bottom: 10px;
     }
   </style>
 </head>
 <body>
   <h1>Malla Química y Farmacia UCh</h1>
-  <div class="grid-container" id="grid"></div>
+  <div class="grid" id="grid"></div>
 
   <script>
-    const courses = {
-      // Primer al Quinto Semestre
-      'Química General I': [],
-      'Técnicas de Laboratorio Químico': [],
-      'Mecánica': [],
-      'Introducción al Cálculo': [],
-      'Químico Farmacéutico y su Acción': [],
-      'Inglés I': [],
-
-      'Química General II': ['Química General I'],
-      'Laboratorio de Química General': ['Química General I', 'Técnicas de Laboratorio Químico'],
-      'Electromagnetismo': ['Introducción al Cálculo', 'Mecánica'],
-      'Calculo Diferencial e Integral': ['Introducción al Cálculo'],
-      'Biología General': [],
-      'Medicamento y su Evolución': ['Químico Farmacéutico y su Acción'],
-      'Inglés II': ['Inglés I'],
-
-      'Química Orgánica I': ['Química General II'],
-      'Química Analítica I': ['Química General II', 'Laboratorio de Química General'],
-      'Laboratorio de Química Orgánica': ['Química General II', 'Laboratorio de Química General'],
-      'Estadística y Análisis de Datos': ['Calculo Diferencial e Integral'],
-      'Fisiología Celular': ['Biología General', 'Química General I', 'Electromagnetismo'],
-      'Investigación para las Ciencias Farmacéuticas': ['Medicamento y su Evolución', 'Inglés II'],
-      'Inglés III': ['Inglés II'],
-
-      'Química Orgánica II': ['Química Orgánica I'],
-      'Laboratorio de Análisis Químico': ['Química Analítica I', 'Estadística y Análisis de Datos'],
-      'Química Analítica II': ['Química Analítica I'],
-      'Fisicoquímica': ['Mecánica', 'Química Orgánica I'],
-      'Fisiología de Sistemas': ['Fisiología Celular'],
-      'Práctica Intermedia': ['Investigación para las Ciencias Farmacéuticas'],
-      'Inglés IV': ['Inglés III'],
-
-      'Laboratorio de Análisis Instrumental': ['Laboratorio de Análisis Químico', 'Química Analítica II'],
-      'Botánica y Farmacognosia': ['Química Analítica II', 'Química Orgánica II'],
-      'Química de Heterocíclicos y Análisis Espectroscópico': ['Química Orgánica II'],
-      'Bioquímica': ['Fisicoquímica', 'Química Orgánica II'],
-      'Farmacología General': ['Fisiología de Sistemas', 'Laboratorio de Análisis Químico'],
-      'Gestión de Calidad': ['Investigación para las Ciencias Farmacéuticas'],
-
-      // Sexto al Décimo Semestre
-      'Microbiología': ['Bioquímica'],
-      'Farmacoquímica I': ['Farmacología General', 'Química de Heterocíclicos y Análisis Espectroscópico'],
-      'Farmacología de Sistemas I': ['Farmacología General'],
-      'Fisiopatología Molecular': ['Bioquímica', 'Fisiología de Sistemas'],
-      'Legislación Farmacéutica': ['Gestión de Calidad', 'Práctica Intermedia'],
-      'Fisicoquímica Farmacéutica': ['Fisicoquímica'],
-
-      'Fisiopatología y Semiología': ['Fisiopatología Molecular'],
-      'Farmacoquímica II': ['Farmacoquímica I'],
-      'Farmacología de Sistemas II': ['Microbiología', 'Farmacología de Sistemas I'],
-      'Salud Pública': ['Legislación Farmacéutica'],
-      'Tecnología Farmacéutica I': ['Fisicoquímica Farmacéutica', 'Legislación Farmacéutica'],
-      'Operaciones Unitarias': ['Fisicoquímica Farmacéutica'],
-
-      'Análisis de Medicamentos, Doping y Drogas de Abuso': ['Farmacoquímica II', 'Laboratorio de Análisis Instrumental'],
-      'Nutrición Clínica': ['Fisiopatología y Semiología'],
-      'Bioquímica Clínica': ['Fisiopatología y Semiología'],
-      'Biofarmacia y Farmacocinética': ['Farmacología General', 'Tecnología Farmacéutica I'],
-      'Tecnología Farmacéutica II': ['Tecnología Farmacéutica I', 'Operaciones Unitarias'],
-      'Administración y Gestión Farmacéutica': ['Tecnología Farmacéutica I'],
-      'Estadística Farmacéutica': ['Salud Pública', 'Estadística y Análisis de Datos'],
-
-      'Farmacología Clínica': ['Biofarmacia y Farmacocinética', 'Bioquímica Clínica'],
-      'Bromatología': ['Nutrición Clínica', 'Laboratorio de Análisis Instrumental'],
-      'Toxicología': ['Bioquímica Clínica', 'Farmacología de Sistemas II'],
-      'Farmacia Asistencial': ['Administración y Gestión Farmacéutica', 'Salud Pública'],
-      'Tecnología Cosmética': ['Tecnología Farmacéutica II'],
-
-      'Farmacia Clínica': ['Farmacología Clínica'],
-      'Práctica Profesional en Farmacia Comunitaria': ['Farmacología Clínica', 'Toxicología', 'Administración y Gestión Farmacéutica'],
-      'Biotecnología Farmacéutica': ['Fisiopatología Molecular', 'Tecnología Farmacéutica II'],
-      'Economía y Marketing Farmacéutico': ['Administración y Gestión Farmacéutica', 'Salud Pública', 'Farmacología Clínica'],
-      'Innovación y Proyectos': ['Estadística Farmacéutica'],
-
-      'Actividad Final de Titulación': ['Innovación y Proyectos', 'Economía y Marketing Farmacéutico', 'Farmacia Clínica', 'Biotecnología Farmacéutica', 'Práctica Profesional en Farmacia Comunitaria']
-    };
-
-    const saved = JSON.parse(localStorage.getItem("malla-uch")) || [];
-
-    function canUnlock(course) {
-      return courses[course].every(pr => saved.includes(pr));
-    }
+    const coursesBySemester = [
+      {
+        title: "1º Semestre",
+        courses: [
+          "Química General I",
+          "Técnicas de Laboratorio Químico",
+          "Mecánica",
+          "Introducción al Cálculo",
+          "Químico Farmacéutico y su Acción",
+          "Inglés I",
+        ],
+      },
+      {
+        title: "2º Semestre",
+        courses: [
+          "Química General II",
+          "Laboratorio de Química General",
+          "Electromagnetismo",
+          "Calculo Diferencial e Integral",
+          "Biología General",
+          "Medicamento y su Evolución",
+          "Inglés II",
+        ],
+      },
+      {
+        title: "3º Semestre",
+        courses: [
+          "Química Orgánica I",
+          "Química Analítica I",
+          "Laboratorio de Química Orgánica",
+          "Estadística y Análisis de Datos",
+          "Fisiología Celular",
+          "Investigación para las Ciencias Farmacéuticas",
+          "Inglés III",
+        ],
+      },
+      {
+        title: "4º Semestre",
+        courses: [
+          "Química Orgánica II",
+          "Laboratorio de Análisis Químico",
+          "Química Analítica II",
+          "Fisicoquímica",
+          "Fisiología de Sistemas",
+          "Práctica Intermedia",
+          "Inglés IV",
+        ],
+      },
+      {
+        title: "5º Semestre",
+        courses: [
+          "Laboratorio de Análisis Instrumental",
+          "Botánica y Farmacognosia",
+          "Química de Heterocíclicos y Análisis Espectroscópico",
+          "Bioquímica",
+          "Farmacología General",
+          "Gestión de Calidad",
+        ],
+      },
+      {
+        title: "6º Semestre",
+        courses: [
+          "Microbiología",
+          "Farmacoquímica I",
+          "Farmacología de Sistemas I",
+          "Fisiopatología Molecular",
+          "Legislación Farmacéutica",
+          "Fisicoquímica Farmacéutica",
+        ],
+      },
+      {
+        title: "7º Semestre",
+        courses: [
+          "Fisiopatología y Semiología",
+          "Farmacoquímica II",
+          "Farmacología de Sistemas II",
+          "Salud Pública",
+          "Tecnología Farmacéutica I",
+          "Operaciones Unitarias",
+        ],
+      },
+      {
+        title: "8º Semestre",
+        courses: [
+          "Análisis de Medicamentos, Doping y Drogas de Abuso",
+          "Nutrición Clínica",
+          "Bioquímica Clínica",
+          "Biofarmacia y Farmacocinética",
+          "Tecnología Farmacéutica II",
+          "Administración y Gestión Farmacéutica",
+          "Estadística Farmacéutica",
+        ],
+      },
+      {
+        title: "9º Semestre",
+        courses: [
+          "Farmacología Clínica",
+          "Bromatología",
+          "Toxicología",
+          "Farmacia Asistencial",
+          "Tecnología Cosmética",
+        ],
+      },
+      {
+        title: "10º Semestre",
+        courses: [
+          "Farmacia Clínica",
+          "Práctica Profesional en Farmacia Comunitaria",
+          "Biotecnología Farmacéutica",
+          "Economía y Marketing Farmacéutico",
+          "Innovación y Proyectos",
+        ],
+      },
+      {
+        title: "11º Semestre",
+        courses: [
+          "Actividad Final de Titulación",
+        ],
+      },
+    ];
 
     const grid = document.getElementById("grid");
-    const entries = Object.entries(courses);
-    const columns = 6;
-    const rows = Math.ceil(entries.length / columns);
+    const savedState = JSON.parse(localStorage.getItem("approvedCourses") || "{}");
 
-    for (let col = 0; col < columns; col++) {
-      const sem = document.createElement("div");
-      sem.className = "semester";
-      for (let row = 0; row < rows; row++) {
-        const i = row * columns + col;
-        if (i >= entries.length) continue;
-        const [name] = entries[i];
-        const btn = document.createElement("button");
-        btn.innerText = name;
-        btn.className = saved.includes(name)
-          ? "course completed"
-          : canUnlock(name)
-          ? "course unlocked"
-          : "course locked";
-        btn.onclick = () => {
-          if (!canUnlock(name)) return;
-          const idx = saved.indexOf(name);
-          if (idx >= 0) saved.splice(idx, 1);
-          else saved.push(name);
-          localStorage.setItem("malla-uch", JSON.stringify(saved));
-          location.reload();
-        };
-        sem.appendChild(btn);
-      }
-      grid.appendChild(sem);
-    }
+    coursesBySemester.forEach((semester) => {
+      const column = document.createElement("div");
+      column.className = "column";
+
+      const title = document.createElement("div");
+      title.className = "semester-title";
+      title.textContent = semester.title;
+      column.appendChild(title);
+
+      semester.courses.forEach((course) => {
+        const box = document.createElement("div");
+        box.className = "box";
+        box.textContent = course;
+
+        if (savedState[course]) {
+          box.classList.add("approved");
+        }
+
+        box.addEventListener("click", () => {
+          const isApproved = box.classList.contains("approved");
+          box.classList.toggle("approved");
+
+          savedState[course] = !isApproved;
+          localStorage.setItem("approvedCourses", JSON.stringify(savedState));
+        });
+
+        column.appendChild(box);
+      });
+
+      grid.appendChild(column);
+    });
   </script>
 </body>
 </html>
