@@ -1,164 +1,202 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Malla QyF - UChile</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Malla QyF Interactiva</title>
   <style>
     body {
-      background-color: #ffe4f0;
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 0;
+      font-family: sans-serif;
+      background-color: #ffe6f0;
+      padding: 20px;
     }
-
     h1 {
       text-align: center;
-      color: #c2185b;
-      margin: 20px 0;
+      color: #d63384;
     }
-
-    .grid-container {
+    .grid {
       display: grid;
-      grid-auto-flow: column;
-      grid-auto-columns: min-content;
-      gap: 15px;
-      padding: 20px;
-      overflow-x: auto;
+      grid-template-columns: repeat(11, 1fr);
+      gap: 10px;
+      align-items: start;
     }
-
-    .semester {
+    .semestre {
       display: flex;
       flex-direction: column;
-      align-items: center;
-      background-color: #fff0f6;
-      border: 2px solid #ffc1e3;
-      padding: 10px;
+      background-color: #fff0f5;
+      border: 1px solid #d63384;
       border-radius: 10px;
-      min-width: 180px;
+      padding: 10px;
     }
-
-    .semester h2 {
-      color: #ad1457;
+    .semestre h2 {
       font-size: 16px;
-      margin-bottom: 10px;
+      margin: 5px 0;
       text-align: center;
+      color: #d63384;
     }
-
-    .course {
-      margin: 6px 0;
-      padding: 8px;
-      width: 160px;
-      background-color: #f8bbd0;
-      color: #000;
-      border: none;
+    .ramo {
+      background-color: lightgray;
+      border: 1px solid #ccc;
       border-radius: 8px;
+      padding: 5px;
+      margin: 4px 0;
       cursor: pointer;
-      font-size: 13px;
-      transition: 0.3s;
+      transition: background-color 0.3s;
     }
-
-    .course:hover {
-      background-color: #f06292;
-      color: white;
-    }
-
-    .course:disabled {
-      background-color: #e0e0e0;
-      cursor: not-allowed;
-      color: #888;
-    }
-
-    .course.approved {
+    .ramo.aprobado {
       background-color: fuchsia;
       color: white;
+    }
+    .ramo:hover {
+      background-color: #ddd;
     }
   </style>
 </head>
 <body>
-  <h1>Malla Interactiva QyF - UChile</h1>
-  <div class="grid-container" id="course-grid"></div>
-
+  <h1>Malla Interactiva Química y Farmacia UChile</h1>
+  <div class="grid" id="malla"></div>
   <script>
-    const semesters = {
-      'I Semestre': [
-        { name: 'Química General I', id: '1' },
-        { name: 'Técnicas de Lab. Clínico', id: '2' },
-        { name: 'Matemática', id: '3' },
-        { name: 'Intro QyF', id: '4' },
-        { name: 'Curso FG', id: '5' },
-        { name: 'Inglés I', id: '6' },
-      ],
-      'II Semestre': [
-        { name: 'Química General II', id: '7', reqs: ['1'] },
-        { name: 'Lab Q. General', id: '8', reqs: ['1'] },
-        { name: 'Electromagnetismo', id: '9' },
-        { name: 'Cálculo Diferencial', id: '10' },
-        { name: 'Rol QF', id: '11' },
-        { name: 'Inglés II', id: '12', reqs: ['6'] },
-      ],
-      'III Semestre': [
-        { name: 'Química Orgánica I', id: '13', reqs: ['7'] },
-        { name: 'Lab Q. Orgánica', id: '14', reqs: ['13'] },
-        { name: 'Estadística', id: '15', reqs: ['10'] },
-        { name: 'Filosofía', id: '16' },
-        { name: 'Inglés III', id: '17', reqs: ['12'] },
-      ],
-      // Puedes seguir agregando más semestres aquí...
-    };
+    const malla = document.getElementById("malla");
 
-    const approvedCourses = new Set();
-
-    function isUnlocked(course) {
-      return !course.reqs || course.reqs.every(r => approvedCourses.has(r));
-    }
-
-    function createCourseButton(course) {
-      const button = document.createElement("button");
-      button.textContent = course.name;
-      button.className = "course";
-      button.disabled = !isUnlocked(course);
-
-      button.addEventListener("click", () => {
-        if (!approvedCourses.has(course.id)) {
-          approvedCourses.add(course.id);
-          button.classList.add("approved");
-        } else {
-          approvedCourses.delete(course.id);
-          button.classList.remove("approved");
-        }
-        updateCourses();
-      });
-
-      if (approvedCourses.has(course.id)) {
-        button.classList.add("approved");
+    const semestres = [
+      {
+        nombre: "I Semestre",
+        ramos: [
+          "Química General I",
+          "Técnicas de Laboratorio Químico",
+          "Mecánica",
+          "Introducción al Cálculo",
+          "Químico Farmacéutico y su Acción",
+          "Inglés I"
+        ]
+      },
+      {
+        nombre: "II Semestre",
+        ramos: [
+          "Química General II",
+          "Laboratorio de Química General",
+          "Electromagnetismo",
+          "Calculo Diferencial e Integral",
+          "Biología General",
+          "Medicamento y su Evolución",
+          "Inglés II"
+        ]
+      },
+      {
+        nombre: "III Semestre",
+        ramos: [
+          "Química Orgánica I",
+          "Química Analítica I",
+          "Laboratorio de Química Orgánica",
+          "Estadística y Análisis de Datos",
+          "Fisiología Celular",
+          "Investigación para las Ciencias Farmacéuticas",
+          "Inglés III"
+        ]
+      },
+      {
+        nombre: "IV Semestre",
+        ramos: [
+          "Química Orgánica II",
+          "Laboratorio de Análisis Químico",
+          "Química Analítica II",
+          "Fisicoquímica",
+          "Fisiología de Sistemas",
+          "Práctica Intermedia",
+          "Inglés IV"
+        ]
+      },
+      {
+        nombre: "V Semestre",
+        ramos: [
+          "Laboratorio de Análisis Instrumental",
+          "Botánica y Farmacognosia",
+          "Química de Heterocíclicos y Análisis Espectroscópico",
+          "Bioquímica",
+          "Farmacología General",
+          "Gestión de Calidad"
+        ]
+      },
+      {
+        nombre: "VI Semestre",
+        ramos: [
+          "Microbiología",
+          "Farmacoquímica I",
+          "Farmacología de Sistemas I",
+          "Fisiopatología Molecular",
+          "Legislación Farmacéutica",
+          "Fisicoquímica Farmacéutica"
+        ]
+      },
+      {
+        nombre: "VII Semestre",
+        ramos: [
+          "Fisiopatología y Semiología",
+          "Farmacoquímica II",
+          "Farmacología de Sistemas II",
+          "Salud Pública",
+          "Tecnología Farmacéutica I",
+          "Operaciones Unitarias"
+        ]
+      },
+      {
+        nombre: "VIII Semestre",
+        ramos: [
+          "Análisis de Medicamentos, Doping y Drogas de Abuso",
+          "Nutrición Clínica",
+          "Bioquímica Clínica",
+          "Biofarmacia y Farmacocinética",
+          "Tecnología Farmacéutica II",
+          "Administración y Gestión Farmacéutica",
+          "Estadística Farmacéutica"
+        ]
+      },
+      {
+        nombre: "IX Semestre",
+        ramos: [
+          "Farmacología Clínica",
+          "Bromatología",
+          "Toxicología",
+          "Farmacia Asistencial",
+          "Tecnología Cosmética"
+        ]
+      },
+      {
+        nombre: "X Semestre",
+        ramos: [
+          "Farmacia Clínica",
+          "Práctica Profesional en Farmacia Comunitaria",
+          "Biotecnología Farmacéutica",
+          "Economía y Marketing Farmacéutico",
+          "Innovación y Proyectos"
+        ]
+      },
+      {
+        nombre: "XI Semestre",
+        ramos: [
+          "Actividad Final de Titulación"
+        ]
       }
+    ];
 
-      return button;
-    }
+    semestres.forEach(sem => {
+      const col = document.createElement("div");
+      col.classList.add("semestre");
+      const titulo = document.createElement("h2");
+      titulo.textContent = sem.nombre;
+      col.appendChild(titulo);
 
-    function updateCourses() {
-      const grid = document.getElementById("course-grid");
-      grid.innerHTML = "";
-
-      for (const [semesterName, courses] of Object.entries(semesters)) {
-        const semesterCol = document.createElement("div");
-        semesterCol.className = "semester";
-
-        const title = document.createElement("h2");
-        title.textContent = semesterName;
-        semesterCol.appendChild(title);
-
-        courses.forEach(course => {
-          const button = createCourseButton(course);
-          semesterCol.appendChild(button);
+      sem.ramos.forEach(ramo => {
+        const div = document.createElement("div");
+        div.textContent = ramo;
+        div.classList.add("ramo");
+        div.addEventListener("click", () => {
+          div.classList.toggle("aprobado");
         });
-
-        grid.appendChild(semesterCol);
-      }
-    }
-
-    updateCourses();
+        col.appendChild(div);
+      });
+      malla.appendChild(col);
+    });
   </script>
 </body>
 </html>
