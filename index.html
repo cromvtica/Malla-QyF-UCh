@@ -1,202 +1,181 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Malla QyF Interactiva</title>
-  <style>
-    body {
-      font-family: sans-serif;
-      background-color: #ffe6f0;
-      padding: 20px;
-    }
-    h1 {
-      text-align: center;
-      color: #d63384;
-    }
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(11, 1fr);
-      gap: 10px;
-      align-items: start;
-    }
-    .semestre {
-      display: flex;
-      flex-direction: column;
-      background-color: #fff0f5;
-      border: 1px solid #d63384;
-      border-radius: 10px;
-      padding: 10px;
-    }
-    .semestre h2 {
-      font-size: 16px;
-      margin: 5px 0;
-      text-align: center;
-      color: #d63384;
-    }
-    .ramo {
-      background-color: lightgray;
-      border: 1px solid #ccc;
-      border-radius: 8px;
-      padding: 5px;
-      margin: 4px 0;
-      cursor: pointer;
-      transition: background-color 0.3s;
-    }
-    .ramo.aprobado {
-      background-color: fuchsia;
-      color: white;
-    }
-    .ramo:hover {
-      background-color: #ddd;
-    }
-  </style>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Malla Curricular Interactiva Completa</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    background: #fff0f6;
+    padding: 20px;
+  }
+  h2 {
+    color: #c71585;
+  }
+  .semestre {
+    margin-bottom: 30px;
+  }
+  .ramo {
+    cursor: pointer;
+    border: 2px solid #d8bfd8;
+    background-color: #fce4ec;
+    padding: 10px;
+    margin: 5px 0;
+    border-radius: 6px;
+    user-select: none;
+    transition: background-color 0.3s, border-color 0.3s;
+  }
+  .bloqueado {
+    background-color: #e0e0e0;
+    border-color: #ccc;
+    cursor: not-allowed;
+    color: #888;
+  }
+  .desbloqueado {
+    background-color: #ffc0cb;
+    border-color: #ff69b4;
+    color: #333;
+  }
+  .aprobado {
+    background-color: #c71585;
+    border-color: #8b008b;
+    color: white;
+  }
+</style>
 </head>
 <body>
-  <h1>Malla Interactiva Química y Farmacia UChile</h1>
-  <div class="grid" id="malla"></div>
-  <script>
-    const malla = document.getElementById("malla");
 
-    const semestres = [
-      {
-        nombre: "I Semestre",
-        ramos: [
-          "Química General I",
-          "Técnicas de Laboratorio Químico",
-          "Mecánica",
-          "Introducción al Cálculo",
-          "Químico Farmacéutico y su Acción",
-          "Inglés I"
-        ]
-      },
-      {
-        nombre: "II Semestre",
-        ramos: [
-          "Química General II",
-          "Laboratorio de Química General",
-          "Electromagnetismo",
-          "Calculo Diferencial e Integral",
-          "Biología General",
-          "Medicamento y su Evolución",
-          "Inglés II"
-        ]
-      },
-      {
-        nombre: "III Semestre",
-        ramos: [
-          "Química Orgánica I",
-          "Química Analítica I",
-          "Laboratorio de Química Orgánica",
-          "Estadística y Análisis de Datos",
-          "Fisiología Celular",
-          "Investigación para las Ciencias Farmacéuticas",
-          "Inglés III"
-        ]
-      },
-      {
-        nombre: "IV Semestre",
-        ramos: [
-          "Química Orgánica II",
-          "Laboratorio de Análisis Químico",
-          "Química Analítica II",
-          "Fisicoquímica",
-          "Fisiología de Sistemas",
-          "Práctica Intermedia",
-          "Inglés IV"
-        ]
-      },
-      {
-        nombre: "V Semestre",
-        ramos: [
-          "Laboratorio de Análisis Instrumental",
-          "Botánica y Farmacognosia",
-          "Química de Heterocíclicos y Análisis Espectroscópico",
-          "Bioquímica",
-          "Farmacología General",
-          "Gestión de Calidad"
-        ]
-      },
-      {
-        nombre: "VI Semestre",
-        ramos: [
-          "Microbiología",
-          "Farmacoquímica I",
-          "Farmacología de Sistemas I",
-          "Fisiopatología Molecular",
-          "Legislación Farmacéutica",
-          "Fisicoquímica Farmacéutica"
-        ]
-      },
-      {
-        nombre: "VII Semestre",
-        ramos: [
-          "Fisiopatología y Semiología",
-          "Farmacoquímica II",
-          "Farmacología de Sistemas II",
-          "Salud Pública",
-          "Tecnología Farmacéutica I",
-          "Operaciones Unitarias"
-        ]
-      },
-      {
-        nombre: "VIII Semestre",
-        ramos: [
-          "Análisis de Medicamentos, Doping y Drogas de Abuso",
-          "Nutrición Clínica",
-          "Bioquímica Clínica",
-          "Biofarmacia y Farmacocinética",
-          "Tecnología Farmacéutica II",
-          "Administración y Gestión Farmacéutica",
-          "Estadística Farmacéutica"
-        ]
-      },
-      {
-        nombre: "IX Semestre",
-        ramos: [
-          "Farmacología Clínica",
-          "Bromatología",
-          "Toxicología",
-          "Farmacia Asistencial",
-          "Tecnología Cosmética"
-        ]
-      },
-      {
-        nombre: "X Semestre",
-        ramos: [
-          "Farmacia Clínica",
-          "Práctica Profesional en Farmacia Comunitaria",
-          "Biotecnología Farmacéutica",
-          "Economía y Marketing Farmacéutico",
-          "Innovación y Proyectos"
-        ]
-      },
-      {
-        nombre: "XI Semestre",
-        ramos: [
-          "Actividad Final de Titulación"
-        ]
+<h1>Malla Curricular Interactiva Completa</h1>
+
+<!-- Primer Semestre -->
+<div class="semestre" id="sem1">
+  <h2>Primer Semestre</h2>
+  <div class="ramo desbloqueado" data-id="qg1" data-prereqs="">Química General I</div>
+  <div class="ramo desbloqueado" data-id="tlq" data-prereqs="">Técnicas de Laboratorio Químico</div>
+  <div class="ramo desbloqueado" data-id="mec" data-prereqs="">Mecánica</div>
+  <div class="ramo desbloqueado" data-id="calc1" data-prereqs="">Introducción al Cálculo</div>
+  <div class="ramo desbloqueado" data-id="qfa" data-prereqs="">Químico Farmacéutico y su Acción</div>
+  <div class="ramo desbloqueado" data-id="ing1" data-prereqs="">Inglés I</div>
+</div>
+
+<!-- Segundo Semestre -->
+<div class="semestre" id="sem2">
+  <h2>Segundo Semestre</h2>
+  <div class="ramo bloqueado" data-id="qg2" data-prereqs="qg1">Química General II</div>
+  <div class="ramo bloqueado" data-id="ti" data-prereqs="tlq">Técnicas Instrumentales</div>
+  <div class="ramo bloqueado" data-id="fis" data-prereqs="mec">Física</div>
+  <div class="ramo bloqueado" data-id="calc2" data-prereqs="calc1">Cálculo II</div>
+  <div class="ramo bloqueado" data-id="qo1" data-prereqs="qg1">Química Orgánica I</div>
+  <div class="ramo bloqueado" data-id="ing2" data-prereqs="ing1">Inglés II</div>
+</div>
+
+<!-- Tercer Semestre -->
+<div class="semestre" id="sem3">
+  <h2>Tercer Semestre</h2>
+  <div class="ramo bloqueado" data-id="qo2" data-prereqs="qo1">Química Orgánica II</div>
+  <div class="ramo bloqueado" data-id="bio" data-prereqs="qfa">Biología</div>
+  <div class="ramo bloqueado" data-id="estat" data-prereqs="calc2">Estadística</div>
+  <div class="ramo bloqueado" data-id="ing3" data-prereqs="ing2">Inglés III</div>
+</div>
+
+<!-- Cuarto Semestre -->
+<div class="semestre" id="sem4">
+  <h2>Cuarto Semestre</h2>
+  <div class="ramo bloqueado" data-id="fito" data-prereqs="bio">Fitoquímica</div>
+  <div class="ramo bloqueado" data-id="bioquim" data-prereqs="qo2">Bioquímica</div>
+  <div class="ramo bloqueado" data-id="micro" data-prereqs="bio">Microbiología</div>
+  <div class="ramo bloqueado" data-id="ing4" data-prereqs="ing3">Inglés IV</div>
+</div>
+
+<!-- Quinto Semestre -->
+<div class="semestre" id="sem5">
+  <h2>Quinto Semestre</h2>
+  <div class="ramo bloqueado" data-id="farmaco" data-prereqs="bioquim">Farmacología</div>
+  <div class="ramo bloqueado" data-id="analit" data-prereqs="bioquim,ti">Análisis Químico</div>
+  <div class="ramo bloqueado" data-id="genet" data-prereqs="micro">Genética</div>
+  <div class="ramo bloqueado" data-id="ing5" data-prereqs="ing4">Inglés V</div>
+</div>
+
+<!-- Sexto Semestre -->
+<div class="semestre" id="sem6">
+  <h2>Sexto Semestre</h2>
+  <div class="ramo bloqueado" data-id="biotecn" data-prereqs="genet">Biotecnología</div>
+  <div class="ramo bloqueado" data-id="toxic" data-prereqs="farmaco">Toxicología</div>
+  <div class="ramo bloqueado" data-id="bioinfo" data-prereqs="estat,biotecn">Bioinformática</div>
+  <div class="ramo bloqueado" data-id="ing6" data-prereqs="ing5">Inglés VI</div>
+</div>
+
+<!-- Séptimo Semestre -->
+<div class="semestre" id="sem7">
+  <h2>Séptimo Semestre</h2>
+  <div class="ramo bloqueado" data-id="farmacog" data-prereqs="farmaco">Farmacognosia</div>
+  <div class="ramo bloqueado" data-id="medicinal" data-prereqs="bioquim,farmaco">Química Medicinal</div>
+  <div class="ramo bloqueado" data-id="seminario" data-prereqs="ing6">Seminario de Investigación</div>
+</div>
+
+<!-- Octavo Semestre -->
+<div class="semestre" id="sem8">
+  <h2>Octavo Semestre</h2>
+  <div class="ramo bloqueado" data-id="proyecto" data-prereqs="seminario">Proyecto de Título</div>
+  <div class="ramo bloqueado" data-id="practica" data-prereqs="proyecto">Práctica Profesional</div>
+</div>
+
+<script>
+  const ramos = document.querySelectorAll('.ramo');
+  const ramosArray = Array.from(ramos);
+  const estadoRamos = {};
+
+  // Inicializar estados desde clases CSS
+  ramosArray.forEach(ramo => {
+    if (ramo.classList.contains('aprobado')) estadoRamos[ramo.dataset.id] = 'aprobado';
+    else if (ramo.classList.contains('desbloqueado')) estadoRamos[ramo.dataset.id] = 'desbloqueado';
+    else estadoRamos[ramo.dataset.id] = 'bloqueado';
+  });
+
+  function actualizarDesbloqueo() {
+    ramosArray.forEach(ramo => {
+      if (estadoRamos[ramo.dataset.id] === 'aprobado') return;
+
+      const prereqs = ramo.dataset.prereqs.split(',').filter(x => x);
+      if (prereqs.length === 0) {
+        estadoRamos[ramo.dataset.id] = 'desbloqueado';
+      } else {
+        const todosAprobados = prereqs.every(id => estadoRamos[id] === 'aprobado');
+        estadoRamos[ramo.dataset.id] = todosAprobados ? 'desbloqueado' : 'bloqueado';
       }
-    ];
-
-    semestres.forEach(sem => {
-      const col = document.createElement("div");
-      col.classList.add("semestre");
-      const titulo = document.createElement("h2");
-      titulo.textContent = sem.nombre;
-      col.appendChild(titulo);
-
-      sem.ramos.forEach(ramo => {
-        const div = document.createElement("div");
-        div.textContent = ramo;
-        div.classList.add("ramo");
-        div.addEventListener("click", () => {
-          div.classList.toggle("aprobado");
-        });
-        col.appendChild(div);
-      });
-      malla.appendChild(col);
     });
-  </script>
+  }
+
+  function actualizarClases() {
+    ramosArray.forEach(ramo => {
+      ramo.classList.remove('bloqueado', 'desbloqueado', 'aprobado');
+      ramo.classList.add(estadoRamos[ramo.dataset.id]);
+    });
+  }
+
+  function onClickRamo(event) {
+    const ramo = event.currentTarget;
+    const id = ramo.dataset.id;
+    const estado = estadoRamos[id];
+
+    if (estado === 'bloqueado') return;
+
+    if (estado === 'desbloqueado') estadoRamos[id] = 'aprobado';
+    else if (estado === 'aprobado') estadoRamos[id] = 'desbloqueado';
+
+    actualizarDesbloqueo();
+    actualizarClases();
+  }
+
+  ramosArray.forEach(ramo => {
+    ramo.addEventListener('click', onClickRamo);
+  });
+
+  actualizarDesbloqueo();
+  actualizarClases();
+</script>
+
 </body>
 </html>
+
