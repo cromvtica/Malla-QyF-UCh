@@ -10,43 +10,49 @@
     margin: 20px;
     background-color: #fff;
     color: #333;
+    overflow: hidden; /* Para evitar scroll externo */
   }
   h1 {
     text-align: center;
-    margin-bottom: 25px;
+    margin-bottom: 20px;
     font-weight: 700;
     color: #D1006F;
   }
-  /* Contenedor general: dos filas para semestres */
+  /* Contenedor general con tamaño fijo para no desbordar */
+  #malla-wrapper {
+    max-width: 1200px;
+    max-height: 750px;
+    margin: 0 auto;
+    border: 2px solid #D85C7A;
+    border-radius: 10px;
+    padding: 10px;
+    background-color: #fdf0f4;
+    overflow-y: auto; /* Scroll vertical solo si es necesario */
+  }
+  /* Contenedor para filas */
   .malla-container {
     display: flex;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
     justify-content: center;
-    gap: 15px 30px;
-    max-width: 1200px;
-    margin: 0 auto;
+    gap: 30px;
   }
-  /* Cada semestre será una columna con máximo ancho */
+  /* Cada fila con flex para contener columnas */
+  .fila {
+    display: flex;
+    gap: 20px;
+    flex: 1 1 auto;
+    justify-content: center;
+  }
   .semestre {
+    flex: 1 1 160px; /* ancho mínimo y flexible */
+    max-width: 180px;
+    min-width: 160px;
     border: 2px solid #D85C7A;
     border-radius: 8px;
-    background-color: #fdf0f4;
-    padding: 8px 12px;
-    width: calc(50% / 5 - 12px); /* 10 columnas en 2 filas = 5 columnas por fila, menos espacio */
+    padding: 8px 10px;
     display: flex;
     flex-direction: column;
     box-sizing: border-box;
-  }
-  /* En pantallas pequeñas adaptamos */
-  @media (max-width: 1100px) {
-    .semestre {
-      width: calc(50% / 3 - 12px); /* 3 columnas por fila para pantallas más chicas */
-    }
-  }
-  @media (max-width: 700px) {
-    .semestre {
-      width: 100%; /* En móvil 1 columna */
-    }
   }
   .semestre h2 {
     margin: 8px 0 12px 0;
@@ -89,12 +95,26 @@
   .ramo:hover:not(.bloqueado) {
     box-shadow: 0 3px 9px rgba(209, 0, 111, 0.75);
   }
+  /* Scrollbar personalizado para el contenedor vertical */
+  #malla-wrapper::-webkit-scrollbar {
+    width: 8px;
+  }
+  #malla-wrapper::-webkit-scrollbar-thumb {
+    background-color: #D85C7A;
+    border-radius: 10px;
+  }
+  #malla-wrapper::-webkit-scrollbar-track {
+    background: #fdf0f4;
+  }
 </style>
 </head>
 <body>
 
 <h1>Malla Química y Farmacia UCh</h1>
-<div class="malla-container" id="malla-container"></div>
+
+<div id="malla-wrapper">
+  <div class="malla-container" id="malla-container"></div>
+</div>
 
 <script>
   const mallaOriginal = {
@@ -185,7 +205,6 @@
     ]
   };
 
-  // Inicializamos o cargamos estado guardado
   function inicializarEstado() {
     let estadoGuardado = localStorage.getItem('mallaEstado');
     if (estadoGuardado) return JSON.parse(estadoGuardado);
@@ -260,24 +279,17 @@
   function renderizarMalla() {
     container.innerHTML = '';
 
-    // Obtenemos lista semestres para dividir en dos filas
     const semestres = Object.keys(mallaEstado);
     const mitad = Math.ceil(semestres.length / 2);
 
-    // Contenedor para filas
+    // Crear contenedores para filas
     const filaArriba = document.createElement('div');
+    filaArriba.classList.add('fila');
+    filaArriba.style.marginBottom = '20px';
+
     const filaAbajo = document.createElement('div');
+    filaAbajo.classList.add('fila');
 
-    // Estilos flex para filas
-    filaArriba.style.display = 'flex';
-    filaArriba.style.justifyContent = 'center';
-    filaArriba.style.gap = '30px';
-    filaArriba.style.marginBottom = '25px';
-    filaAbajo.style.display = 'flex';
-    filaAbajo.style.justifyContent = 'center';
-    filaAbajo.style.gap = '30px';
-
-    // Rellenamos filas con semestres
     semestres.forEach((semestre, idx) => {
       const divSem = document.createElement('div');
       divSem.classList.add('semestre');
